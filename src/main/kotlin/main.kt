@@ -20,8 +20,8 @@ fun main() {
         println("Введите сумму совершаемого перевода в рублях")
         val transferSum = scanner.nextDouble()
 
-        if (transferSum < 35) {
-            println("Минимальаня сумма перевода 35 р.")
+        if (transferSum < 50) {
+            println("Минимальная сумма перевода 50 р.")
             continue
         } else if (paymentType != PaymentType.Vk && transferSum > 150_000 || monthAmount > 600_000) {
             println("Максимальная сумма переводов по карте 150000 р. в сутки и 600000 р. в месяц")
@@ -43,14 +43,10 @@ fun calculateComission(
 ) {
     var commission = when (paymentType) {
         PaymentType.Vk -> transferSum * 0.0
-        PaymentType.MasterCard -> {
+        PaymentType.MasterCard, PaymentType.Maestro -> {
             if (monthAmount < 75_000 && transferSum > 300) transferSum * 0.0 else transferSum * 0.006 + 20.0
         }
-        PaymentType.Maestro -> {
-            if (monthAmount < 75_000 && transferSum > 300) transferSum * 0.0 else transferSum * 0.006 + 20.0
-        }
-        PaymentType.Visa -> transferSum * 0.0075
-        PaymentType.Mir -> transferSum * 0.0075
+        PaymentType.Visa, PaymentType.Mir -> if (transferSum * 0.0075 < 35.0) 35.0 else transferSum * 0.075
     }
     commission *= 100 //перевод в копейки
     println("Комиссия составляет ${commission.roundToInt()} копеек")
