@@ -40,16 +40,17 @@ fun calculateComission(
     paymentType: PaymentType = PaymentType.Vk,
     monthAmount: Double = 0.0,
     transferSum: Double
-) {
+): Double {
     var commission = when (paymentType) {
-        PaymentType.Vk -> transferSum * 0.0
+        PaymentType.Vk -> 0.0
         PaymentType.MasterCard, PaymentType.Maestro -> {
-            if (monthAmount < 75_000 && transferSum > 300) transferSum * 0.0 else transferSum * 0.006 + 20.0
+            if (monthAmount < 75_000 && transferSum > 300) 0.0 else transferSum * 0.006 + 20.0
         }
-        PaymentType.Visa, PaymentType.Mir -> if (transferSum * 0.0075 < 35.0) 35.0 else transferSum * 0.075
+        PaymentType.Visa, PaymentType.Mir -> if (transferSum * 0.0075 < 35.0) 35.0 else transferSum * 0.0075
     }
     commission *= 100 //перевод в копейки
     println("Комиссия составляет ${commission.roundToInt()} копеек")
+    return commission
 }
 
 enum class PaymentType {
