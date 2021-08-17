@@ -76,7 +76,7 @@ class MainKtTest {
             transferSum = transferSum
         )
 
-        assertEquals(2300.0, result, 0.0)
+        assertEquals(0.0, result, 0.0)
     }
 }
 
